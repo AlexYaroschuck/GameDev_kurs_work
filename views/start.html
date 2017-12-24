@@ -1,0 +1,26 @@
+<html>
+<head>
+     <script src="../js/jquery-3.2.1.min.js"></script>
+	 <script src="../js/script (2).js"></script>
+     <script type="text/javascript" src="../js/HexagonTools.js"></script>
+     <script src="../js/grid.js"></script>
+	 <script src="../js/game.js"></script>
+</head>
+    
+<body style="margin: 0px;"> 
+<div>
+	<button onclick="Game.StartGame()" style="position:absolute;right:0px;">Start Algorithm</button>
+</div>
+<canvas id="hexCanvas" width="1500" height="1000" style="width:1500px;height:1000px" />
+
+    
+    <script>
+        $(document).ready(_ => {
+          
+	       Game.InitGrid();
+           $("#hexCanvas").click(e => Game.CanvasCkickHandler(e));    
+        });
+		
+    </script>
+</body>
+</html>
