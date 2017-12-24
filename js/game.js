@@ -11,8 +11,8 @@ Game.StaticData = {
 Game.FilledPoints = new Array();
 
 Game.InitGrid = function() {
-   let width = 130;//30
-   let height = 130;	//30
+   let width = 30;//30
+   let height = 30;	//30
 
    let a = -3.0;
    let b = (-2.0 * width);
@@ -81,16 +81,30 @@ Game.StartGame = function(){
 	// Example
 	start = [+startCoords[0], +startCoords[1]]
 	finish = [+endCoords[0], +endCoords[1]]
-	walls = []
-//		[5, 5],
-//		[5, 6],
-//    	[5, 4],
-//	]
-	let pathlog = AStar(start, finish, walls, expandState, convertCoords, distance);
+	walls = Game.ParseFilledPoints('gray');
+	console.log(walls)
+//	walls = [[11,6], [11,7],[11,8]]
+//	console.log(walls)
+	let pathlog = Anneal(start, finish, walls, expandState, convertCoords, distance);
 	
 	console.log(pathlog)
 	
 	Game.DrowAlgorithm(pathlog)
+}
+
+Game.ParseFilledPoints = function (color){
+	let arr = [];
+	for(let h of Game.FilledPoints){
+		if(h.Color != color)
+			continue;
+		
+		let prs = h.Hex.Id.split("_");
+		
+		arr.push([+prs[0], +prs[1]])
+		arr.push([+prs[0], +prs[1] +1])	
+	}
+	
+	return arr;
 }
 
 Game.DrowAlgorithm = function(pathlog){

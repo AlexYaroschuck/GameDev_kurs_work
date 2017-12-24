@@ -1,10 +1,10 @@
 var gridType = 'hexagon'
 var metric = 'euclidian'
 var maxIters = 10000
-var minX = -20
-var maxX = 20
-var minY = -20
-var maxY = 20
+var minX = -60
+var maxX = 60
+var minY = -60
+var maxY = 60
 
 // Convert weird coordinares to euclidian
 coordAdapters = {
