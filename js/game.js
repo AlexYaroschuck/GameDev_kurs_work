@@ -78,13 +78,11 @@ Game.StartGame = function(){
 	
 	let startCoords = startPoint.Hex.Id.split("_");
 	let endCoords = endPoint.Hex.Id.split("_");
-	// Example
+	
 	start = [+startCoords[0], +startCoords[1]]
 	finish = [+endCoords[0], +endCoords[1]]
 	walls = Game.ParseFilledPoints('gray');
-	console.log(walls)
-//	walls = [[11,6], [11,7],[11,8]]
-//	console.log(walls)
+	
 	let pathlog = Anneal(start, finish, walls, expandState, convertCoords, distance);
 	
 	console.log(pathlog)
@@ -117,26 +115,15 @@ Game.DrowAlgorithm = function(pathlog){
 		if (/*path[0] % 2 == 1 && */hex== null ){
 			coords = `${path[0] < 0 ? path[0] * -1: path[0]}_${path[1] - 1}`;
 			hex = Game.StaticData.Grid.GetHexById(coords);
-		}
-		
-		
-		
-		//console.log(coords);
-		
+		}		
 		
 		if(hex == null)
-		{
-			console.log('null: ' + coords)
 			continue;
-		}
 		
 		let currItem = Game.FilledPoints.find(x=> x.Hex == hex);
 		
 		if(currItem != null)
-		{
-			console.log('Exists: ' + currItem.Hex.Id)
 			continue;
-		}
 		
 		hex.drowAndFill(Game.StaticData.Ctx, 'yellow');
 	}

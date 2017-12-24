@@ -1,10 +1,10 @@
 var gridType = 'hexagon'
 var metric = 'euclidian'
 var maxIters = 10000
-var minX = -60
-var maxX = 60
-var minY = -60
-var maxY = 60
+var minX = -100
+var maxX = 100
+var minY = -100
+var maxY = 100
 
 // Convert weird coordinares to euclidian
 coordAdapters = {
@@ -236,7 +236,7 @@ Anneal = (start, finish, walls, expandState, convertCoords, distance) => {
 
         var prob = 1
         if (nextRank > curRank) {
-            prob = Math.exp(-(nextRank - curRank) / (1 / T))
+           prob = Math.exp(-(nextRank - curRank) / (10 / Math.log10(T)))
         }
         if (Math.random() < prob) {
             path.push(next)
@@ -300,17 +300,4 @@ Dijkstra = (start, finish, walls, expandState, convertCoords, distance) => {
 convertCoords = coordAdapters[gridType]
 expandState = stateExpandMethods[gridType]
 distance = metrics[metric]
-
-// Example
-start = [0, 0]
-finish = [10, 10]
-walls = [
-    // [5, 5],
-    // [5, 6],
-    // [5, 4],
-]
-// console.log(Anneal(start, finish, walls, expandState, convertCoords, distance))
-// console.log(AStar(start, finish, walls, expandState, convertCoords, distance)) //слишком долго думает 
- //console.log(Dijkstra(start, finish, walls, expandState, convertCoords, distance)) //Uncaught TypeError: closed.push is not a function
-
 
