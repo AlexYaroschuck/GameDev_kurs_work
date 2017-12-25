@@ -54,11 +54,9 @@ AH.DrowAlgorithm = function(pathlog, points, type, grid, ctx){
 	},50);
 };
 
-
 AH.DrowAlgorithmPath = function(pathlog, points, type, grid, ctx){
 	let i =0;
 	let interval = setInterval( _ => {
-	//for(let i = 0; i< pathlog.log.length; i++){
 		if(i >= pathlog.log.length){
 			clearInterval(interval);
 			AH.DrowAlgorithm(pathlog, points, type, grid, ctx);
@@ -84,8 +82,7 @@ AH.DrowAlgorithmPath = function(pathlog, points, type, grid, ctx){
 				continue;
 			
 			polygon.drowAndFill(ctx, '#d3d3d3');	
-		}
-	
+		}	
 		
 		i++;
 	},50);
