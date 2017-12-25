@@ -1,9 +1,9 @@
 var gridType = 'hexagon'
 var metric = 'euclidian'
 var maxIters = 10000
-var minX = -100
+var minX = 0
 var maxX = 100
-var minY = -100
+var minY = 0
 var maxY = 100
 
 // Convert weird coordinares to euclidian
