@@ -38,6 +38,24 @@ Game.InitHexagonGrid = function() {
    Game.DrowHexes();
 }
 
+Game.ChangeAlg = function(type){
+	switch(type){
+		case 0:
+			AH.StaticData.Algorithm = 'Dijkstra';
+			$("#alg").text("Dijkstra");
+			break;
+		case 1:
+			AH.StaticData.Algorithm = 'AStar';
+			$("#alg").text("AStar");
+			break;
+		case 2:
+			AH.StaticData.Algorithm = 'Anneal';
+			$("#alg").text("Anneal");
+			break;
+	}
+		
+}
+
 Game.InitCanvas = function(){
    Game.StaticData.Canvas = document.getElementById("hexCanvas");
    Game.StaticData.Ctx =  Game.StaticData.Canvas.getContext('2d');
@@ -49,7 +67,7 @@ Game.ClearGrid = function(){
 }
 
 Game.ReinitGrid = function(){
-	Game.StaticData.Ctx.clearRect(0,0, 1500,1500);
+	Game.StaticData.Ctx.clearRect(0,0, 1500,1500);//TODO depends on type
 	Game.InitHexagonGrid();
 }
 

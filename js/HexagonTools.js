@@ -136,14 +136,6 @@ HT.Hexagon.prototype.Contains = function(/*Point*/ p) {
 	return isIn;
 };
 
-HT.Hexagon.prototype.distanceFromMidPoint = function(/*Point*/ p) {
-	var deltaX = this.MidPoint.X - p.X;
-	var deltaY = this.MidPoint.Y - p.Y;
-
-	return Math.sqrt( (deltaX * deltaX) + (deltaY * deltaY) );
-};
-
-
 HT.Hexagon.Orientation = {
 	Normal: 0,
 	Rotated: 1

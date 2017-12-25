@@ -12,9 +12,13 @@
     
 <body style="margin: 0px;"> 
 <div>
+	<label id="alg">AStar</label>
 	<button onclick="Game.StartGame()" style="position:absolute;right:0px;">Start Algorithm</button>
 	<button onclick="Game.ClearGrid()" style="position:absolute;right:0px;top:20px">Clear Grid</button>
 	<button onclick="Game.ClearAlg()" style="position:absolute;right:0px;top:40px">Clear Algorithm</button>
+	<button onclick="Game.ChangeAlg(0)" style="position:absolute;right:0px;top:60px">Use Dijkstra</button>
+	<button onclick="Game.ChangeAlg(1)" style="position:absolute;right:0px;top:80px">Use AStar</button>
+	<button onclick="Game.ChangeAlg(2)" style="position:absolute;right:0px;top:100px">Use Anneal</button>
 </div>
 <canvas id="hexCanvas" width="1500" height="1000" style="width:1500px;height:1000px" />
 
