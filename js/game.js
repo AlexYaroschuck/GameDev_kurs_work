@@ -44,9 +44,31 @@ Game.InitCanvas = function(){
 }
 
 Game.ClearGrid = function(){
+	Game.ReinitGrid();
+	Game.FilledPoints = [];
+}
+
+Game.ReinitGrid = function(){
 	Game.StaticData.Ctx.clearRect(0,0, 1500,1500);
 	Game.InitHexagonGrid();
-	Game.FilledPoints = [];
+}
+
+Game.ClearAlg = function(){	
+	Game.ReinitGrid();
+	
+	for(let p of Game.FilledPoints){
+		if(p.Color == 'yellow')
+			continue;
+		
+		p.Polygon.drowAndFill(Game.StaticData.Ctx, p.Color)
+	}
+	
+	for(let i= Game.FilledPoints.length -1; i>= 0; i--){
+		let item = Game.FilledPoints[i];
+		if(item.Color == 'yellow'){
+			Game.FilledPoints.splice(Game.FilledPoints.indexOf(item), 1);
+		}
+	}
 }
 
 Game.DrowHexes = function (){
