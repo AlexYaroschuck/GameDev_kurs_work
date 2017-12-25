@@ -6,8 +6,7 @@ var Game = Game || {};
 Game.StaticData = {
 	StartPoint: {},
 	EndPoint: {},
-	GridType: 'hex',
-	Algorithm: 'AStar'
+	GridType: 'hex',	
 };
 
 Game.FilledPoints = new Array();
@@ -47,8 +46,8 @@ Game.CanvasClickHandler = function(event){
 	if(hex == null)
 		return;
 	
-	if(Game.IsPolFilled(hex)){	
-		//TODO clear point
+	if(PH.IsPolFilled(hex, Game.FilledPoints)){
+		PH.ClearExistPoly(hex,Game.FilledPoints, Game.StaticData.Ctx);	
 		return;
 	}	
 	
@@ -82,20 +81,9 @@ Game.StartGame = function(){
 	finish = [+endCoords[0], +endCoords[1]]
 	walls = Game.ParseFilledPoints('gray');
 	
-	let pathlog = Game.RunAlgorithm(start, finish, walls, expandState, convertCoords, distance);
+	let pathlog = AH.RunAlgorithm(start, finish, walls, expandState, convertCoords, distance);
 	
-	Game.DrowAlgorithm(pathlog);
-}
-
-Game.RunAlgorithm = function(start, finish, walls, expandState, convertCoords, distance){
-	switch(Game.StaticData.Algorithm){
-		case 'AStar': 
-			return AStar(start, finish, walls, expandState, convertCoords, distance);
-		case 'Anneal':
-			return Anneal(start, finish, walls, expandState, convertCoords, distance);
-		case 'Dijkstra':
-			return Dijkstra(start, finish, walls, expandState, convertCoords, distance);
-	}
+	AH.DrowAlgorithm(pathlog, Game.FilledPoints, Game.StaticData.GridType,Game.StaticData.Grid, Game.StaticData.Ctx);
 }
 
 Game.ParseFilledPoints = function (color){
@@ -113,44 +101,8 @@ Game.ParseFilledPoints = function (color){
 	return arr;
 }
 
-Game.DrowAlgorithm = function(pathlog){
-	for(let path of pathlog.path){
-		
-		let coords = `${path[0] < 0 ? path[0] * -1: path[0]}_${path[1]}`;
-		
-		let polygon = Game.GetById(coords);
-		
-		if (/*path[0] % 2 == 1 && */polygon== null ){
-			coords = `${path[0] < 0 ? path[0] * -1: path[0]}_${path[1] - 1}`;
-			polygon = Game.GetById(coords);
-		}		
-		
-		if(polygon == null)
-			continue;
-		
-		if(Game.IsPolFilled(polygon))
-			continue;
-		
-		polygon.drowAndFill(Game.StaticData.Ctx, 'yellow');
-	}
+Game.GetById = function(coords){
+	return PH.GetById(coords,Game.StaticData.GridType, Game.StaticData.Grid);
 }
-
-Game.IsPolFilled = function(polygon){
-	let currItem = Game.FilledPoints.find(x=> x.Id == polygon.Id);
-		
-	return currItem == null ? false: true;			
-}
-
-//Wrapper for get By Id Method
-//returns polygon on specific position on grid, 
-//id - > column_row
-//id example 34_27
-Game.GetById = function(id){
-	switch(Game.StaticData.GridType) {
-		case 'hex':
-			return Game.StaticData.Grid.GetHexById(id);
-	}
-}
-
 
 

@@ -62,10 +62,6 @@ HT.Hexagon = function(id, x, y) {
 	this.selected = false;
 };
 
-HT.Hexagon.prototype.clearHex = function(ctx){
-	//TODO CLEAR
-}
-
 HT.Hexagon.prototype.drowAndFill = function(ctx, color, showGrid = false) {
 
 	if(!this.selected)
@@ -88,16 +84,20 @@ HT.Hexagon.prototype.drowAndFill = function(ctx, color, showGrid = false) {
     	ctx.fill();
 	}    
 	
-	 if (showGrid) {//TODO
+	 if (showGrid) {
         ctx.font = "4px";
         ctx.fillStyle = "#000";
         ctx.fillText(this.Id, this.Points[0].X - 3,
-							  this.Points[0].Y + (30 - 12));
+							  this.Points[0].Y + 18);
     }
     
 	ctx.closePath();
 	ctx.stroke();	
 };
+
+HT.Hexagon.prototype.clear = function(ctx){
+	this.drowAndFill(ctx, 'white');
+}
 
 HT.Hexagon.prototype.isInBounds = function(x, y) {
 	return this.Contains(new HT.Point(x, y));
