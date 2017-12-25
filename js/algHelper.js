@@ -85,5 +85,5 @@ AH.DrowAlgorithmPath = function(pathlog, points, type, grid, ctx){
 		}	
 		
 		i++;
-	},50);
+	}, AH.StaticData.Algorithm == 'Anneal' ? 10 : 35);
 };
