@@ -13,16 +13,17 @@
 <body style="margin: 0px;"> 
 <div>
 	<button onclick="Game.StartGame()" style="position:absolute;right:0px;">Start Algorithm</button>
+	<button onclick="Game.ClearGrid()" style="position:absolute;right:0px;top:20px">Clear Grid</button>
 </div>
 <canvas id="hexCanvas" width="1500" height="1000" style="width:1500px;height:1000px" />
 
     
     <script>
         $(document).ready(_ => {
-          
-	       Game.InitHexagonGrid();
-			Game.InitCanvas();
-   			Game.DrowHexes();//TODO depends on type
+          Game.InitCanvas();
+			
+	       Game.InitHexagonGrid();//TODO depends on type	
+   			
            $("#hexCanvas").click(e => Game.CanvasClickHandler(e));    
         });
 		

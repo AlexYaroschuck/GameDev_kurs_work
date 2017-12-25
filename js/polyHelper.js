@@ -33,3 +33,7 @@ PH.ClearExistPoly = function(poly, points, ctx){
 	
 	poly.clear(ctx);
 }
+
+PH.ClearAll = function(){
+	
+}

@@ -4,12 +4,20 @@ var Game = Game || {};
 //int rows = 32
 //TODO clear canvas
 Game.StaticData = {
-	StartPoint: {},
-	EndPoint: {},
 	GridType: 'hex',	
+	Grid: {},
+	Ctx: {}
 };
 
-Game.FilledPoints = new Array();
+Game.FilledPoints = new Array(); //Points that are filled)) like start, end, wall etc.
+/* example {
+		X: event.pageX, //i think we don't need X and Y but don't remove) 
+		Y: event.pageY,
+		Color: color, // like red green, used like a type
+		Polygon: hex, // polygon, complex object mb later we ll use it
+		Id: hex.Id // id for fast search
+	};	
+*/
 
 Game.InitHexagonGrid = function() {
    let width = 30;//30
@@ -26,11 +34,19 @@ Game.InitHexagonGrid = function() {
    HT.Hexagon.Static.SIDE = z;
 
    Game.StaticData.Grid = new HT.Grid(1500, 1000);
+	
+   Game.DrowHexes();
 }
 
 Game.InitCanvas = function(){
    Game.StaticData.Canvas = document.getElementById("hexCanvas");
    Game.StaticData.Ctx =  Game.StaticData.Canvas.getContext('2d');
+}
+
+Game.ClearGrid = function(){
+	Game.StaticData.Ctx.clearRect(0,0, 1500,1500);
+	Game.InitHexagonGrid();
+	Game.FilledPoints = [];
 }
 
 Game.DrowHexes = function (){
@@ -83,7 +99,9 @@ Game.StartGame = function(){
 	
 	let pathlog = AH.RunAlgorithm(start, finish, walls, expandState, convertCoords, distance);
 	
-	AH.DrowAlgorithm(pathlog, Game.FilledPoints, Game.StaticData.GridType,Game.StaticData.Grid, Game.StaticData.Ctx);
+	AH.DrowAlgorithmPath(pathlog, Game.FilledPoints, Game.StaticData.GridType,
+					 Game.StaticData.Grid, Game.StaticData.Ctx)
+	
 }
 
 Game.ParseFilledPoints = function (color){
