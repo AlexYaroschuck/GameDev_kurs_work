@@ -2,15 +2,17 @@ var Game = Game || {};
 
 //in row = 33;
 //int rows = 32
-
+//TODO clear canvas
 Game.StaticData = {
 	StartPoint: {},
-	EndPoint: {}
+	EndPoint: {},
+	GridType: 'hex',
+	Algorithm: 'AStar'
 };
 
 Game.FilledPoints = new Array();
 
-Game.InitGrid = function() {
+Game.InitHexagonGrid = function() {
    let width = 30;//30
    let height = 30;	//30
 
@@ -25,9 +27,6 @@ Game.InitGrid = function() {
    HT.Hexagon.Static.SIDE = z;
 
    Game.StaticData.Grid = new HT.Grid(1500, 1000);
-  
-   Game.InitCanvas();
-   Game.DrowHexes();
 }
 
 Game.InitCanvas = function(){
@@ -41,30 +40,30 @@ Game.DrowHexes = function (){
 	 }
 }
 
-Game.CanvasCkickHandler = function(event){
+Game.CanvasClickHandler = function(event){
     let hex = Game.StaticData.Grid.GetHexAt({x:event.pageX, y:event.pageY});  
 	let color = 'gray'
 	
 	if(hex == null)
 		return;
 	
-	//TODO clear point
+	if(Game.IsPolFilled(hex)){	
+		//TODO clear point
+		return;
+	}	
 	
-	if(Game.FilledPoints.length == 0){//TODO when clear decide on color
-		color = 'green'		;
-	}
-	else if(Game.FilledPoints.length == 1){
-		color = 'red';
-	}
+	if(Game.FilledPoints.find(x=> x.Color == 'green')== null)
+		color = 'green'		;	
+	else if(Game.FilledPoints.find(x=> x.Color == 'red') == null)
+		color = 'red';	
 	
 	Game.FilledPoints.push({
 		X: event.pageX,
 		Y: event.pageY,
 		Color: color,
-		Hex: hex
-	});
-	
-	console.log(hex.Id)
+		Polygon: hex,
+		Id: hex.Id
+	});	
 	
     hex.drowAndFill(Game.StaticData.Ctx, color); 
 }
@@ -76,18 +75,27 @@ Game.StartGame = function(){
 	if(!startPoint || !endPoint)
 		return;
 	
-	let startCoords = startPoint.Hex.Id.split("_");
-	let endCoords = endPoint.Hex.Id.split("_");
+	let startCoords = startPoint.Id.split("_");
+	let endCoords = endPoint.Id.split("_");
 	
 	start = [+startCoords[0], +startCoords[1]]
 	finish = [+endCoords[0], +endCoords[1]]
 	walls = Game.ParseFilledPoints('gray');
 	
-	let pathlog = Anneal(start, finish, walls, expandState, convertCoords, distance);
+	let pathlog = Game.RunAlgorithm(start, finish, walls, expandState, convertCoords, distance);
 	
-	console.log(pathlog)
-	
-	Game.DrowAlgorithm(pathlog)
+	Game.DrowAlgorithm(pathlog);
+}
+
+Game.RunAlgorithm = function(start, finish, walls, expandState, convertCoords, distance){
+	switch(Game.StaticData.Algorithm){
+		case 'AStar': 
+			return AStar(start, finish, walls, expandState, convertCoords, distance);
+		case 'Anneal':
+			return Anneal(start, finish, walls, expandState, convertCoords, distance);
+		case 'Dijkstra':
+			return Dijkstra(start, finish, walls, expandState, convertCoords, distance);
+	}
 }
 
 Game.ParseFilledPoints = function (color){
@@ -96,7 +104,7 @@ Game.ParseFilledPoints = function (color){
 		if(h.Color != color)
 			continue;
 		
-		let prs = h.Hex.Id.split("_");
+		let prs = h.Id.split("_");
 		
 		arr.push([+prs[0], +prs[1]])
 		arr.push([+prs[0], +prs[1] +1])	
@@ -110,22 +118,37 @@ Game.DrowAlgorithm = function(pathlog){
 		
 		let coords = `${path[0] < 0 ? path[0] * -1: path[0]}_${path[1]}`;
 		
-		let hex = Game.StaticData.Grid.GetHexById(coords);
+		let polygon = Game.GetById(coords);
 		
-		if (/*path[0] % 2 == 1 && */hex== null ){
+		if (/*path[0] % 2 == 1 && */polygon== null ){
 			coords = `${path[0] < 0 ? path[0] * -1: path[0]}_${path[1] - 1}`;
-			hex = Game.StaticData.Grid.GetHexById(coords);
+			polygon = Game.GetById(coords);
 		}		
 		
-		if(hex == null)
+		if(polygon == null)
 			continue;
 		
-		let currItem = Game.FilledPoints.find(x=> x.Hex == hex);
-		
-		if(currItem != null)
+		if(Game.IsPolFilled(polygon))
 			continue;
 		
-		hex.drowAndFill(Game.StaticData.Ctx, 'yellow');
+		polygon.drowAndFill(Game.StaticData.Ctx, 'yellow');
+	}
+}
+
+Game.IsPolFilled = function(polygon){
+	let currItem = Game.FilledPoints.find(x=> x.Id == polygon.Id);
+		
+	return currItem == null ? false: true;			
+}
+
+//Wrapper for get By Id Method
+//returns polygon on specific position on grid, 
+//id - > column_row
+//id example 34_27
+Game.GetById = function(id){
+	switch(Game.StaticData.GridType) {
+		case 'hex':
+			return Game.StaticData.Grid.GetHexById(id);
 	}
 }
 

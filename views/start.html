@@ -1,7 +1,7 @@
 <html>
 <head>
      <script src="../js/jquery-3.2.1.min.js"></script>
-	 <script src="../js/script (2).js"></script>
+	 <script src="../js/script.js"></script>
      <script type="text/javascript" src="../js/HexagonTools.js"></script>
      <script src="../js/grid.js"></script>
 	 <script src="../js/game.js"></script>
@@ -17,8 +17,10 @@
     <script>
         $(document).ready(_ => {
           
-	       Game.InitGrid();
-           $("#hexCanvas").click(e => Game.CanvasCkickHandler(e));    
+	       Game.InitHexagonGrid();
+			Game.InitCanvas();
+   			Game.DrowHexes();//TODO depends on type
+           $("#hexCanvas").click(e => Game.CanvasClickHandler(e));    
         });
 		
     </script>

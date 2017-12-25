@@ -62,7 +62,11 @@ HT.Hexagon = function(id, x, y) {
 	this.selected = false;
 };
 
-HT.Hexagon.prototype.drowAndFill = function(ctx, color) {
+HT.Hexagon.prototype.clearHex = function(ctx){
+	//TODO CLEAR
+}
+
+HT.Hexagon.prototype.drowAndFill = function(ctx, color, showGrid = false) {
 
 	if(!this.selected)
 		ctx.strokeStyle = "grey";
@@ -84,7 +88,7 @@ HT.Hexagon.prototype.drowAndFill = function(ctx, color) {
     	ctx.fill();
 	}    
 	
-	 if (1==1) {//TODO
+	 if (showGrid) {//TODO
         ctx.font = "4px";
         ctx.fillStyle = "#000";
         ctx.fillText(this.Id, this.Points[0].X - 3,
