@@ -191,27 +191,27 @@ AStar = (start, finish, walls, expandState, convertCoords, distance) => {
     open = new BinaryHeap(p => getRank(p[p.length - 1]))
     closed1 = {};
     open.push(path(start));
-	
+
     for (var i = 0; i < maxIters; i++) {
         p = open.pop();
         x = p[p.length - 1];
-		
+
         if (closed1[x.toString()]) {
             continue
         }
-		
+
         if (finish.toString() == x.toString()) {
             return {path: p.map(p => [p[0], p[1]]), log: log}
         }
-		
+
         closed1[x.toString()] = 1;
         successors = expandState(x, walls);
-		
+
         log.push({
             opened: open.content.map(x => x[x.length - 1]),
             closed1: Object.keys(closed1).map(e => JSON.parse('[' + e + ']'))
         });
-		
+
         for (var k in successors) {
             successors[k].parent = x;
             open.push(path(successors[k]));
@@ -239,7 +239,7 @@ Anneal = (start, finish, walls, expandState, convertCoords, distance) => {
 
         var prob = 1
         if (nextRank > curRank) {
-           prob = Math.exp(-(nextRank - curRank) / (10 / Math.log10(T)))
+            prob = Math.exp(-(nextRank - curRank) / (10 / Math.log10(T)))
         }
         if (Math.random() < prob) {
             path.push(next)
@@ -280,7 +280,7 @@ Dijkstra = (start, finish, walls, expandState, convertCoords, distance) => {
 
         open = open.concat(successors)
         closed1.push(v)
-        log.push({open: open, closed: closed1.map(e => e)})
+        log.push({opened: open, closed: closed1.map(e => e)})
         for (var u in successors) {
             u = successors[u]
             if (U.includes(u.toString()))

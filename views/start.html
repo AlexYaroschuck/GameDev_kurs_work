@@ -1,37 +1,66 @@
 <html>
 <head>
-     <script src="../js/jquery-3.2.1.min.js"></script>
-	 <script src="../js/script.js"></script>
-     <script type="text/javascript" src="../js/HexagonTools.js"></script>
-     <script src="../js/grid.js"></script>
-	 <script src="../js/polyHelper.js"></script>
-	 <script src="../js/algHelper.js"></script>
-	 <script src="../js/game.js"></script>
-	
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/script.js"></script>
+    <script type="text/javascript" src="../js/HexagonTools.js"></script>
+    <script src="../js/grid.js"></script>
+    <script src="../js/polyHelper.js"></script>
+    <script src="../js/algHelper.js"></script>
+    <script src="../js/game.js"></script>
+    <script src="../js/squareGrid.js"></script>
+    <script src="../js/Sgrid.js"></script>
 </head>
-    
-<body style="margin: 0px;"> 
-<div>
-	<label id="alg" style="position:absolute;right:200px;top:0">AStar</label>
-	<button onclick="Game.StartGame()" style="position:absolute;right:0px;">Start Algorithm</button>
-	<button onclick="Game.ClearGrid()" style="position:absolute;right:0px;top:20px">Clear Grid</button>
-	<button onclick="Game.ClearAlg()" style="position:absolute;right:0px;top:40px">Clear Algorithm</button>
-	<button onclick="Game.ChangeAlg(0)" style="position:absolute;right:0px;top:60px">Use Dijkstra</button>
-	<button onclick="Game.ChangeAlg(1)" style="position:absolute;right:0px;top:80px">Use AStar</button>
-	<button onclick="Game.ChangeAlg(2)" style="position:absolute;right:0px;top:100px">Use Anneal</button>
-</div>
-<canvas id="hexCanvas" width="1500" height="1000" style="width:1500px;height:1000px" />
 
-    
-    <script>
-        $(document).ready(_ => {
-          Game.InitCanvas();
-			
-	       Game.InitHexagonGrid();//TODO depends on type	
-   			
-           $("#hexCanvas").click(e => Game.CanvasClickHandler(e));    
+<body style="margin: 0px;">
+<div>
+    <div class="settings">
+        <ul>
+            <label id="alg">Chosen Algorithm:</label>
+        </ul>
+        <h3>Algorithm</h3>
+        <div class="settings-block">
+            <input type="radio" id="dijkstra"
+                   name="alg" value="0">
+            <label for="dijkstra">Dijkstra</label>
+
+            <input type="radio" id="astar"
+                   name="alg" value="1">
+            <label for="astar">Astar</label>
+
+            <input type="radio" id="anneal"
+                   name="alg" value="2">
+            <label for="anneal">Anneal</label>
+        </div>
+        <h3>Grid Type</h3>
+        <div class="settings-block">
+            <input type="radio" id="hex"
+                   name="grid-type" value="hexagon">
+            <label for="hex">Hexagon</label>
+
+            <input type="radio" id="sqr"
+                   name="grid-type" value="square">
+            <label for="sqr">Square</label>
+        </div>
+        <button onclick="Game.StartGame()">Start Algorithm</button>
+        <button onclick="Game.ClearGrid()">Clear Grid</button>
+        <button onclick="Game.ClearAlg()">Clear Algorithm</button>
+    </div>
+</div>
+<canvas id="hexCanvas" width="1000" height="1000"/>
+
+<script>
+    $(document).ready(_ => {
+        $(document).on('click', 'input[name="alg"]', Game.ChangeAlg);
+        $(document).on('click', 'input[name="grid-type"]', function () {
+            Game.ReinitGrid(true, $(this).val());
         });
-		
-    </script>
+        const HEXAGON_GRID = 'hexagon';
+        const SQUARE_GRID = 'square';
+        Game.InitCanvas();
+        $("#hexCanvas").click(e => Game.CanvasClickHandler(e));
+    });
+
+</script>
 </body>
 </html>

@@ -1,0 +1,19 @@
+.settings {
+    width: 275px;
+    height: 360px;
+    position: fixed;
+    margin-left: 1000px;
+    border: 1px solid black;
+}
+
+.settings .settings-block {
+    width: 90%;
+    height: 10%;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+
+#hexCanvas {
+    width: 1000px;
+    height: 1000px;
+}
