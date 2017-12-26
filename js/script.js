@@ -280,7 +280,7 @@ Dijkstra = (start, finish, walls, expandState, convertCoords, distance) => {
 
         open = open.concat(successors)
         closed1.push(v)
-        log.push({open: open, closed: closed1.map(e => e)})
+        log.push({opened: open, closed: closed1.map(e => e)})
         for (var u in successors) {
             u = successors[u]
             if (U.includes(u.toString()))
