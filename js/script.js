@@ -285,7 +285,8 @@ Dijkstra = (start, finish, walls, expandState, convertCoords, distance) => {
             u = successors[u]
             if (U.includes(u.toString()))
                 continue
-            w = getRank(u) - getRank(v)
+            // w = getRank(u) - getRank(v)
+            w = 1
             if (d[u] > d[v] + w) {
                 d[u] = d[v] + w
                 d_U[u] = d[u]
